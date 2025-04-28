@@ -14,7 +14,7 @@ async function bootstrap() {
 
   // Enable CORS with specific origin
   app.enableCors({
-    origin: ['http://localhost:5173','https://school-payment-frontend-ten.vercel.app/'], // Allow requests from your frontend
+    origin: ['http://localhost:5173','https://school-payment-frontend-ten.vercel.app'], // Allow requests from your frontend
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
     credentials: true, // Allow cookies and credentials
   });
