@@ -69,8 +69,11 @@ import {
         throw new ForbiddenException('Could not sign in');
       }
   
-      res.cookie('token', token, { httpOnly: true });
-  
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: true, // Required for HTTPS
+        sameSite: 'none', // Required for cross-origin requests
+      });
       return res.send({ message: 'Logged in successfully' });
     }
   
@@ -103,7 +106,7 @@ import {
   
       const token = await this.jwt.signAsync(payload, {
         secret: process.env.JWT_SECRET, // Fetching jwtSecret from environment variable
-        expiresIn: '1h', // Optional: Set token expiration
+        expiresIn: '3h', // Optional: Set token expiration
       });
   
       return token;
