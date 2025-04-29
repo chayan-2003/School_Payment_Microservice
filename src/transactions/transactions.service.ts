@@ -120,7 +120,7 @@ export class TransactionsService {
         transaction_amount: '$order_status.transaction_amount',
         status: '$order_status.status',
         payment_time: '$order_status.payment_time',
-        custom_order_id: '$order_status.customOrderId',
+        custom_order_id: '$customOrderId', 
       },
     });
 
@@ -134,18 +134,16 @@ export class TransactionsService {
       { $count: 'totalEntries' }, // Count total documents matching the filters
     ];
 
-    // Execute the aggregation for transactions and count
+
     const transactions = await this.mongoService.getCollection('Order').aggregate(pipeline).toArray();
     const totalCountResult = await this.mongoService.getCollection('Order').aggregate(countPipeline).toArray();
     const totalEntries = totalCountResult.length > 0 ? totalCountResult[0].totalEntries : 0;
 
-    const totalPages = Math.ceil(totalEntries / limit); // Calculate total pages
-
-    // Return transactions with pagination meta information
+    const totalPages = Math.ceil(totalEntries / limit); 
     return {
       data: transactions,
       meta: {
-        pageNumber: Math.floor(offset / limit) + 1, // Calculate the current page (1-based index)
+        pageNumber: Math.floor(offset / limit) + 1, 
         pageSize: limit,
         totalEntries,
         totalPages,

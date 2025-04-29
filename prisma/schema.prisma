@@ -25,6 +25,7 @@ model Order {
   gateway_name String?
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @updatedAt
+   customOrderId     String?  @unique
 }
 
 model OrderStatus {
@@ -41,5 +42,20 @@ model OrderStatus {
   payment_time       DateTime?
   createdAt          DateTime? @default(now())
   updatedAt          DateTime? @updatedAt
-  customOrderId     String?  @unique
+ 
+}
+model WebhookLog {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  order_id      String?
+  order_amount  Float?
+  transaction_amount Float?
+  gateway       String?
+  bank_reference String?
+  status        String?
+  payment_mode  String?
+  payment_details String?
+  payment_message String?
+  payment_time  DateTime?
+  error_message String?
+  receivedAt    DateTime @default(now()) // Timestamp for when the webhook was received
 }

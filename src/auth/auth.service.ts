@@ -106,7 +106,7 @@ import {
   
       const token = await this.jwt.signAsync(payload, {
         secret: process.env.JWT_SECRET, // Fetching jwtSecret from environment variable
-        expiresIn: '3h', // Optional: Set token expiration
+        expiresIn: process.env.JWT_EXPIRY, // Optional: Set token expiration
       });
   
       return token;

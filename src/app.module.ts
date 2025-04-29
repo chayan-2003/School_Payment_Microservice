@@ -5,6 +5,9 @@ import { TransactionsModule } from './transactions/transactions.module';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from 'prisma/prisma.module';
 import { UsersModule } from './users/users.module';
+import { TransactionStatusModule } from './transaction-status/transaction-status.module';
+import { WebhookModule } from './webhook/webhook.module';
+import { PaymentModule } from './payment/payment.module';
 
 
 @Module({
@@ -17,6 +20,9 @@ import { UsersModule } from './users/users.module';
     PrismaModule,
     AuthModule,
     UsersModule,
+    TransactionStatusModule,
+    WebhookModule,
+    PaymentModule,
  
   ],
 })
