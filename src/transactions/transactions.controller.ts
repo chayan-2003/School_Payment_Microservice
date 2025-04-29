@@ -1,8 +1,8 @@
-
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query ,UseGuards} from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
-
+import { JwtAuthGuard } from '../auth/jwt.guard';
 @Controller('transactions')
+@UseGuards(JwtAuthGuard) 
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
@@ -53,6 +53,19 @@ export class TransactionsController {
       totalEntries: meta.totalEntries,
       totalPages: meta.totalPages,
       data,
+    };
+  }
+  @Get('school/:schoolId')
+  async getTransactionsBySchool(@Param('schoolId') schoolId: string) {
+    console.log('Fetching transactions for schoolId:', schoolId);
+
+    // Call service to fetch all transactions for the given schoolId
+    const transactions = await this.transactionsService.getTransactionsBySchool(schoolId);
+
+    // Return all transactions
+    return {
+      schoolId,
+      transactions,
     };
   }
 }

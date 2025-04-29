@@ -3,8 +3,8 @@ import { MongoClient, Db } from 'mongodb';
 
 @Injectable()
 export class MongodbService implements OnModuleInit {
-  private client: MongoClient;
-  private db: Db;
+  private client: MongoClient | undefined;
+  private db!: Db;
 
   async onModuleInit() {
     const mongoUri = process.env.mongo_uri;
