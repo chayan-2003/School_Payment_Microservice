@@ -7,6 +7,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   $queryRaw: any;
     private _orderStatus: any;
   $client: any;
+    WebhookLog: any;
   public get orderStatus(): any {
     return this._orderStatus;
   }

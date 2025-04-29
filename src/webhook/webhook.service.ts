@@ -36,7 +36,7 @@ export class WebhookService {
         { $set: updateData },
       );
 
-    await this.prisma.webhookLog.create({
+    await this.prisma.WebhookLog.create({
       data: {
         order_id: order_info.order_id,
         order_amount: order_info.order_amount,
