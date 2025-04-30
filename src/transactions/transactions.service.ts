@@ -124,14 +124,14 @@ export class TransactionsService {
       },
     });
 
-    // Pagination stage
+
     pipeline.push({ $skip: offset });
     pipeline.push({ $limit: limit });
 
-    // Count total entries (for pagination metadata)
+  
     const countPipeline = [
-      ...pipeline.slice(0, -2), // Remove skip and limit stages
-      { $count: 'totalEntries' }, // Count total documents matching the filters
+      ...pipeline.slice(0, -2),
+      { $count: 'totalEntries' },
     ];
 
 
@@ -165,7 +165,7 @@ export class TransactionsService {
       { $unwind: '$order_status' },
       {
         $match: {
-          school_id: new ObjectId(schoolId), // Match the schoolId
+          school_id: new ObjectId(schoolId), 
         },
       },
       {
