@@ -311,6 +311,164 @@ This endpoint allows users to create a payment request by passing payment detail
 ### **Summary**
 
 This API allows users to create a payment request, securely interacting with an external payment gateway. It ensures that only authenticated users can access the functionality, and that payment requests are valid and secure. Errors are handled appropriately, with clear messages and error codes to guide the client in case of issues.
+Certainly! Below is the revised documentation where I've specifically mentioned that aggregation occurs in the service layer:
+
+---
+
+## Base URL
+`/transactions`
+
+### Endpoints
+
+#### 1. **POST /create-payment**
+**Description**:  
+This endpoint allows users to create a payment request by passing payment details. It requires a valid JWT token in the Authorization header for security.
+
+**Request Headers**:
+```json
+Authorization: Bearer <token>
+```
+
+**Request Body**:
+```json
+{
+  "school_id": "60d21b4667d0d8992e610c85",
+  "amount": "5000",
+  "callback_url": "https://www.example.com/callback"
+}
+```
+**Fields**:
+- `school_id` (string, required): MongoDB ObjectId of the school. Must match the format of a valid ObjectId.
+- `amount` (string, required): Amount to be paid (numeric string).
+- `callback_url` (string, required): A valid URL where the callback after the payment will be sent.
+
+**Validation Requirements**:
+- `school_id`: Should be a valid MongoDB ObjectId.
+- `amount`: Should be a numeric string.
+- `callback_url`: Should be a valid URL.
+
+---
+
+#### 2. **GET /**
+**Description**:  
+This endpoint fetches all transactions with various filtering options like status, school_id, sorting, and pagination. The service uses MongoDB **aggregation** to efficiently process and filter the data based on the given query parameters.
+
+**Query Parameters**:
+- `status` (string | string[]): Filter by order status.
+- `school_id` (string | string[]): Filter by school ID.
+- `sortBy` (string): Field to sort by. Defaults to `payment_time`.
+- `sortOrder` ('asc' | 'desc'): Sorting order. Defaults to 'asc'.
+- `page` (string): Page number for pagination. Defaults to '1'.
+- `limit` (string): Number of records per page. Defaults to '10'.
+- `startDate` (string, optional): Start date for filtering by payment time.
+- `endDate` (string, optional): End date for filtering by payment time.
+
+**Response**:
+```json
+{
+  "meta": {
+    "page": 1,
+    "limit": 10,
+    "totalEntries": 100,
+    "totalPages": 10
+  },
+  "data": [
+    {
+      "collect_id": "5f6a8f3d7f1c7c001f8c03a1",
+      "school_id": "60d21b4667d0d8992e610c85",
+      "gateway_name": "PayPal",
+      "order_amount": 5000,
+      "transaction_amount": 5000,
+      "status": "Completed",
+      "payment_time": "2023-10-10T14:48:00Z",
+      "custom_order_id": "ORD12345"
+    },
+    ...
+  ]
+}
+```
+
+**Notes**:
+- The **aggregation** pipeline is used in the service layer to process the query with various stages like `$lookup`, `$unwind`, `$match`, `$sort`, and `$skip`/`$limit` for pagination.
+- The aggregation process also includes optional filtering by `status`, `school_id`, and `payment_time` if applicable.
+- The sorting and pagination happen in the aggregation pipeline to efficiently return the results.
+
+---
+
+#### 3. **GET /school/:schoolId**
+**Description**:  
+This endpoint retrieves all transactions related to a specific school, identified by `schoolId`. It utilizes **aggregation** in the service layer to retrieve and process the transactions, including a lookup for related order status information.
+
+**Parameters**:
+- `schoolId` (string): The unique identifier for the school whose transactions are being retrieved.
+
+**Response**:
+```json
+{
+  "schoolId": "60d21b4667d0d8992e610c85",
+  "transactions": [
+    {
+      "collect_id": "5f6a8f3d7f1c7c001f8c03a1",
+      "school_id": "60d21b4667d0d8992e610c85",
+      "gateway_name": "PayPal",
+      "order_amount": 5000,
+      "transaction_amount": 5000,
+      "status": "Completed",
+      "payment_time": "2023-10-10T14:48:00Z"
+    },
+    ...
+  ]
+}
+```
+
+**Notes**:
+- The **aggregation** pipeline in the service layer includes a `$lookup` to join the `OrderStatus` collection with the transactions based on the `collect_id`.
+- The pipeline also applies a `$match` stage to filter by the provided `schoolId`.
+- The data is then projected to include only the necessary fields before being returned as the result.
+
+---
+
+## Service Layer Flow
+
+### Aggregation Details
+
+#### **GET /**  
+- The `TransactionsController` invokes the `TransactionsService.getAllTransactions()` method.
+- **Aggregation Pipeline**:
+  - **$lookup**: Joins the `OrderStatus` collection to fetch the associated order status.
+  - **$unwind**: Flattens the array resulting from the `$lookup`.
+  - **$match**: Filters based on the provided `status`, `school_id`, and optional `payment_time` range (start and end dates).
+  - **$addFields**: Adds additional fields like `transaction_amount` (converted to a numeric type).
+  - **$sort**: Applies sorting based on the `sortBy` parameter.
+  - **$project**: Projects the necessary fields such as `order_amount`, `transaction_amount`, `status`, and `payment_time`.
+  - **Pagination**: Uses `$skip` and `$limit` for pagination.
+- **Result**: The aggregation query returns the filtered and sorted transactions along with pagination metadata like `totalEntries` and `totalPages`.
+
+#### **GET /school/:schoolId**  
+- The `TransactionsController` invokes the `TransactionsService.getTransactionsBySchool()` method.
+- **Aggregation Pipeline**:
+  - **$lookup**: Joins the `OrderStatus` collection to fetch the associated order status.
+  - **$unwind**: Flattens the array resulting from the `$lookup`.
+  - **$match**: Filters by the provided `schoolId`.
+  - **$project**: Projects the necessary fields such as `order_amount`, `transaction_amount`, and `status`.
+- **Result**: The aggregation query returns the transactions specific to the given `schoolId`.
+
+---
+
+## Error Handling
+
+**Common Errors**:
+- **400 Bad Request**: Invalid query parameters or missing required fields (e.g., invalid `school_id` or `status`).
+- **500 Internal Server Error**: An unexpected error occurs during database interaction or aggregation.
+
+---
+
+## Security Considerations
+
+- **JWT Authentication**: The `/transactions` route is protected by the `JwtAuthGuard`, requiring a valid JWT token in the request header for accessing endpoints.
+- **Database Query Protection**: Filters are applied to prevent any unauthorized access to the database (e.g., restricting queries to specific school IDs and statuses).
+
+
 
 
 
