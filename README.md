@@ -308,10 +308,6 @@ This endpoint allows users to create a payment request by passing payment detail
 
 ---
 
-### **Summary**
-
-This API allows users to create a payment request, securely interacting with an external payment gateway. It ensures that only authenticated users can access the functionality, and that payment requests are valid and secure. Errors are handled appropriately, with clear messages and error codes to guide the client in case of issues.
-Certainly! Below is the revised documentation where I've specifically mentioned that aggregation occurs in the service layer:
 
 ---
 
@@ -604,13 +600,6 @@ When a webhook request is received, the `WebhookService.updateTransactionStatus(
 
 ---
 
-## Summary
-
-This webhook endpoint ensures secure transaction status updates from external payment gateways. Using DTO validation and JWT authentication, the system protects against tampered or unauthorized requests. The service layer manages all validation, status updates, and error logging for traceability and correctness.
-
----
-
-Let me know if you'd like the exact code snippets (DTO, service method, guard setup) included in this doc or as a Markdown/PDF format.
 
 
 
