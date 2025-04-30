@@ -48,10 +48,13 @@ export class TransactionsController {
 
     // Return data with pagination meta information
     return {
+      meta:
+      {
       page: pageNumber,
       limit: limitNumber,
       totalEntries: meta.totalEntries,
       totalPages: meta.totalPages,
+      },
       data,
     };
   }
