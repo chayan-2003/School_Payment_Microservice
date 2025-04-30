@@ -468,7 +468,149 @@ This endpoint retrieves all transactions related to a specific school, identifie
 - **JWT Authentication**: The `/transactions` route is protected by the `JwtAuthGuard`, requiring a valid JWT token in the request header for accessing endpoints.
 - **Database Query Protection**: Filters are applied to prevent any unauthorized access to the database (e.g., restricting queries to specific school IDs and statuses).
 
+Thanks for the detailed context. Based on your previous message, here's the **cleaned-up, structured, and technical API documentation** for the `/webhook` endpoint that matches the style and depth of your `/create-payment` documentation — **with service-layer flow, authentication details, and DTO usage.**
 
+---
+
+# API Documentation: Webhook Endpoint
+
+## Base URL:
+```
+/webhook
+```
+
+## Endpoint:
+### `POST /webhook`
+
+### Description:
+This endpoint receives webhook events from an external payment gateway to update the transaction status of a specific order. Authentication via JWT is required to ensure only authorized systems or users can send such updates.
+
+---
+
+## Request Headers:
+- **Authorization**: `Bearer <JWT token>`  
+  A valid JWT token is required for authentication.
+
+---
+
+## Request Body (DTO: `UpdateTransactionStatusDto`):
+
+```json
+{
+  "status": 1,
+  "order_info": {
+    "order_id": "653ad7cf15e4f31234567890",
+    "order_amount": 1200,
+    "transaction_amount": 1200,
+    "gateway": "razorpay",
+    "status": "SUCCESS",
+    "payment_mode": "UPI",
+    "payment_time": "2025-04-30T10:20:30.000Z"
+  }
+}
+```
+
+#### Field Details:
+- `status` (number, required): Indicator of webhook type or processing state.
+- `order_info` (object, required): Contains payment transaction details.
+  - `order_id` (string, required): The order identifier from the system.
+  - `order_amount` (number, required): Total amount for the order.
+  - `transaction_amount` (number, required): Amount successfully transacted.
+  - `gateway` (string, required): Payment gateway used (`razorpay`, `paytm`, etc.).
+  - `status` (string, required): Transaction status (e.g., `SUCCESS`, `FAILED`).
+  - `payment_mode` (string, required): Mode of payment (e.g., `UPI`, `CARD`).
+  - `payment_time` (ISODate string, required): Timestamp of payment confirmation.
+
+---
+
+## Response (Success):
+
+```json
+{
+  "message": "Transaction updated successfully"
+}
+```
+
+---
+
+## Response (Error):
+
+```json
+{
+  "message": "Failed to update transaction",
+  "error": "Detailed error message"
+}
+```
+
+---
+
+## Error Codes:
+
+- **400 Bad Request**: Invalid webhook payload (missing fields or incorrect format).
+- **401 Unauthorized**: JWT token missing or invalid.
+- **500 Internal Server Error**: Failure in processing transaction or internal service error.
+
+---
+
+## Security Considerations
+
+### JWT Authentication:
+
+- Protected via `JwtAuthGuard`.
+- Requires a valid JWT in the `Authorization` header (`Bearer <token>`).
+- Unauthorized access attempts are blocked with a `403 Forbidden` or `401 Unauthorized` error.
+
+---
+
+### Secure Webhook Handling:
+
+- All webhook data is validated using the `UpdateTransactionStatusDto`.
+- Requests are logged for audit and debugging purposes.
+- Status is updated only after confirming the transaction details are valid and consistent with business logic.
+
+---
+
+## Service Layer Flow
+
+### POST `/webhook`
+
+When a webhook request is received, the `WebhookService.updateTransactionStatus()` method is executed.
+
+### Step-by-Step Flow:
+
+#### Step 1: Input Validation
+- `UpdateTransactionStatusDto` validates the incoming payload.
+- Invalid or missing fields trigger a `BadRequestException`.
+
+#### Step 2: Transaction Processing
+- Extract order_id and other metadata from the payload.
+- Check if the order exists in the database.
+- Validate the integrity of transaction data (e.g., matching amounts).
+
+#### Step 3: Update Order Status
+- The order status is updated based on the incoming payment status (`SUCCESS`, `FAILED`, etc.).
+- Associated metadata (e.g., payment_time, payment_mode) is also stored.
+
+#### Step 4: Logging and Auditing
+- A log is stored with the webhook payload and response to prevent duplicate processing or fraud.
+
+#### Step 5: Error Handling
+- Any error during the process (e.g., database failure, logic failure) results in a `500 Internal Server Error` response.
+- Error details are logged and returned in a structured format.
+
+#### Step 6: Final Response
+- On success, returns `{ message: 'Transaction updated successfully' }`.
+- On failure, returns error message with appropriate status code.
+
+---
+
+## Summary
+
+This webhook endpoint ensures secure transaction status updates from external payment gateways. Using DTO validation and JWT authentication, the system protects against tampered or unauthorized requests. The service layer manages all validation, status updates, and error logging for traceability and correctness.
+
+---
+
+Let me know if you'd like the exact code snippets (DTO, service method, guard setup) included in this doc or as a Markdown/PDF format.
 
 
 
