@@ -1,3 +1,5 @@
+
+
 ### **Auth  API Documentation**
 
 **Base URL**:  
@@ -479,7 +481,7 @@ Thanks for the detailed context. Based on your previous message, here's the **cl
 ### `POST /webhook`
 
 ### Description:
-This endpoint receives webhook events from an external payment gateway to update the transaction status of a specific order. Authentication via JWT is required to ensure only authorized systems or users can send such updates.
+This endpoint receives webhook events from an external payment gateway to update the information of order_Status. Authentication via JWT is required to ensure only authorized systems or users can send such updates.
 
 ---
 
@@ -598,9 +600,44 @@ When a webhook request is received, the `WebhookService.updateTransactionStatus(
 - On success, returns `{ message: 'Transaction updated successfully' }`.
 - On failure, returns error message with appropriate status code.
 
-### **Postman Collection**
--This is the collection link https://blue-star-364034.postman.co/workspace/My-Workspace~d953dd8c-e295-43ee-8350-d0c704ee7809/request/28705488-51c3fd6c-393f-4684-bb06-04e60c74b7bf
--The general order would be auth/register (change the body and register )->auth/login and after the cookie is generated all the routes are accessible.
+Sure! Here's a clear and professional instruction you can **directly copy-paste** to describe how to use your Postman collection:
+
+---
+
+### 🔗 **Postman Collection Instructions**
+
+You can access the Postman collection using the following link:  
+ [Postman Collection Link](https://blue-star-364034.postman.co/workspace/My-Workspace~d953dd8c-e295-43ee-8350-d0c704ee7809/request/28705488-51c3fd6c-393f-4684-bb06-04e60c74b7bf)
+
+#### **Usage Flow**
+1. **Register**  
+   - Go to `auth/register` request.  
+   - Modify the body with your desired user details (e.g., `name`, `email`, `password`) and send the request to create a new account.
+
+2. **Login**  
+   - Go to `auth/login` request.  
+   - Enter the same `email` and `password` used during registration and send the request.  
+   - On success, a session cookie will be automatically stored.
+
+3. **Access Other Routes**  
+   - Once logged in, all protected routes in the collection will become accessible using the stored authentication cookie.  
+   - You can now test all authenticated routes without additional headers.
+
+---
+
+###  Environment Variables (`.env`)
+
+
+
+```
+MONGO_URI=mongodb+srv://chayanghosh185:chaya@cluster0.bdiz4vu.mongodb.net/booking?retryWrites=true&w=majority
+
+JWT_SECRET=0LxQYpsZOSlshGtO9F0as3bd19qYn4TZ
+JWT_EXPIRY=10h
+
+```
+
+.
 
 
 
