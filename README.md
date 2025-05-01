@@ -19,7 +19,7 @@ Although `customOrderId` is unique within the `Order` schema, when joined with t
 
 Therefore, consumers of this identifier must be aware that querying by `customOrderId` may return multiple records reflecting the transaction history for a single order.
 
-### API: `/transaction-status/customOrderId/:id`
+### API: `/transaction-status/:customOrderId`
 
 This endpoint is designed to return **all transactions associated with a given `customOrderId`**. This includes every payment attempt or gateway response linked to the corresponding order.
 
@@ -28,9 +28,9 @@ Key considerations:
 - More fields may be returned than originally expected, to aid in debugging and enhance transparency.
 - Each returned record includes all relevant transaction-level details from the `OrderStatus` schema.
 
-### Webhook Behavior
+### API: `/webhook`
 
-Webhook notifications from the payment gateway are used to update transaction status in near real-time.
+This API simulating webhook notification from the payment gateway are used to update transaction status in near real-time.
 
 The behavior is as follows:
 - When a webhook is received, it contains a `collect_id` which is matched against the `OrderStatus` table.
