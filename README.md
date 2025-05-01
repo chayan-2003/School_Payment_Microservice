@@ -7,7 +7,7 @@ As a consequence of this structure:
 - There can be multiple `OrderStatus` records with the same `collect_id` (since each references the same `Order._id`).
 - Similarly, the `customOrderId` field in the `Order` model, while unique at the `Order` level, may appear in multiple records when aggregating transaction-level data (due to multiple statuses per order).
 
-This directly impacts the behavior of the `/transaction-status/customOrderId/:id` API, which is designed to return multiple transaction records for a single custom order ID. This is intentional and ensures visibility into all payment attempts or states associated with a particular order.
+This directly impacts the behavior of the `/transaction-status/:customOrderId` API, which is designed to return multiple transaction records for a single custom order ID. This is intentional and ensures visibility into all payment attempts or states associated with a particular order.
 
 Additional fields may be returned in the API response to provide complete visibility into each transaction's details, which is useful for debugging and operational transparency.
 
@@ -42,8 +42,6 @@ Given the one-to-many relationship between `Order` and `OrderStatus`, multiple t
 This behavior is by design and ensures that clients receive a complete picture of the payment history associated with a particular order identifier.
 
 ---
-
-Let me know if you'd like this included directly in your project's `README.md` file format or want it formatted in Markdown.
 
 # Auth  API 
 
