@@ -810,7 +810,7 @@ JWT_EXPIRY=10h
 
 ### **Setup and Installation Guide**
 
-This guide provides step-by-step instructions to set up and run the Payment Microservices application built with NestJS.
+This guide provides step-by-step instructions to set up and run the Payment Microservices application built with NestJS, Prisma, and MongoDB.
 
 ---
 
@@ -860,37 +860,40 @@ npm install
 Create a .env file in the root directory of the project and add the following environment variables:
 
 ```env
-# MongoDB Connection
-MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/<database>?retryWrites=true&w=majority
-
-# JWT Secret
-JWT_SECRET=your_jwt_secret
-
-# Webhook Secret
-WEBHOOK_SECRET=your_webhook_secret
-
-# JWT Expiry
+mongo_uri=mongodb+srv://chayanghosh185:chaya@cluster0.bdiz4vu.mongodb.net/booking?retryWrites=true&w=majority
+JWT_SECRET=0LxQYpsZOSlshGtO9F0as3bd19qYn4TZ
+PG_SECRET_KEY=edvtest01
+PG_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cnVzdGVlSWQiOiI2NWIwZTU1MmRkMzE5NTBhOWI0MWM1YmEiLCJJbmRleE9mQXBpS2V5Ijo2LCJpYXQiOjE3MTE2MjIyNzAsImV4cCI6MTc0MzE3OTg3MH0.Rye77Dp59GGxwCmwWekJHRj6edXWJnff9finjMhxKuw
 JWT_EXPIRY=10h
-
-# Payment Gateway API Key
-PG_API_KEY=your_pg_api_key
-
-# Payment Gateway Secret Key
-PG_SECRET_KEY=your_pg_secret_key
 ```
 
-Replace the placeholder values (`<username>`, `<password>`, `<cluster-url>`, `<database>`, etc.) with your actual configuration.
 
-#### **2. Update Configuration**
-Ensure that the `ConfigModule` is properly set up in the `AppModule` to load the .env file:
+
+---
+
+### **Prisma Setup**
+
+#### **1. Generate Prisma Client**
+Run the following command to generate the Prisma client:
+```bash
+npx prisma generate
+```
+
+#### **2. Apply Database Migrations**
+If you have defined migrations, apply them to the database:
+```bash
+npx prisma migrate dev
+```
+
+#### **3. Verify Prisma Integration**
+Ensure the `PrismaModule` is imported in the `AppModule`:
 ```typescript
-import { ConfigModule } from '@nestjs/config';
+import { Module } from '@nestjs/common';
+import { PrismaModule } from 'prisma/prisma.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
+    PrismaModule,
     // Other modules...
   ],
 })
@@ -935,25 +938,12 @@ The project follows the modular structure provided by NestJS. Below is an overvi
 | `npm run start`             | Start the application in production mode. |
 | `npm run start:dev`         | Start the application in development mode.|
 | `npm run build`             | Build the application for production.     |
+| `npx prisma generate`       | Generate the Prisma client.               |
+| `npx prisma migrate dev`    | Apply database migrations.                |
 
 ---
 
-### **Troubleshooting**
 
-1. **MongoDB Connection Issues**:
-   - Ensure MongoDB is running locally or the `MONGO_URI` in the .env file points to a valid MongoDB instance.
-
-2. **JWT Authentication Issues**:
-   - Ensure the `JWT_SECRET` in the .env file matches the secret used to generate tokens.
-
-3. **Webhook Signature Validation**:
-   - Ensure the `WEBHOOK_SECRET` in the .env file matches the secret used by the webhook sender.
-
----
-
-### **Conclusion**
-
-This guide provides all the necessary steps to set up, configure, and run the Payment Microservices application. If you encounter any issues, refer to the troubleshooting section or consult the project documentation.
 
 
 
