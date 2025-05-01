@@ -785,7 +785,7 @@ Authorization: Bearer <JWT token>
 
 ---
 
-###  **Postman Collection Instructions**
+# Postman Collection Instructions
 
 You can access the Postman collection using the following link:  
  [Postman Collection Link](https://blue-star-364034.postman.co/workspace/My-Workspace~d953dd8c-e295-43ee-8350-d0c704ee7809/collection/28705488-16c7dc78-3f5d-4017-8447-6210bc269512?action=share&creator=28705488)
