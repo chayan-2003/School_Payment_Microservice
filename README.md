@@ -33,7 +33,7 @@ When a webhook is received from the payment gateway:
 - Since multiple `OrderStatus` entries may exist for a given `collect_id`, the system updates only the first matching record. This approach ensures deterministic behavior and avoids inconsistencies.
 - Every webhook received is logged in the `WebhookLog` table, allowing for future review or replay if needed.
 
-### API: `/transaction-status/customOrderId/:id`
+### API: `/transaction-status/:customOrderId`
 
 This endpoint retrieves all transaction status records associated with a specific `customOrderId`.
 
