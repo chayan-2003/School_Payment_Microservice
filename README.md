@@ -216,7 +216,7 @@ Got it! Here’s the revised version of the API documentation, with the Service 
 
 ---
 
-## ** Payments API**
+# Payments API
 
 ### **Base URL**:
 ```
@@ -355,7 +355,7 @@ This endpoint allows users to create a payment request by passing payment detail
 ---
 
 
-### **Transactions  API **
+#Transactions  API 
 
 **Base URL**:  
 ```
@@ -489,7 +489,7 @@ Thanks for the detailed context. Based on your previous message, here's the **cl
 
 ---
 
-### **Webhook  API **
+#Webhook  API 
 
 ## Base URL:
 ```
@@ -605,7 +605,7 @@ When a webhook request is received, the `WebhookService.updateTransactionStatus(
 - Validate the integrity of transaction data (e.g., matching amounts).
 
 #### Step 3: Update Order Status
-- The order status is updated based on the incoming payment status (`SUCCESS`, `FAILED`, etc.).
+- The order status is updated after matching the incoming order_id with the collect_id  of the order_status . Since there could be same collect_id for multiple order_status , it would update the first order_status entry that matches.
 - Associated metadata (e.g., payment_time, payment_mode) is also stored.
 
 #### Step 4: Logging and Auditing
@@ -622,7 +622,7 @@ When a webhook request is received, the `WebhookService.updateTransactionStatus(
 
 
 ---
-### **Transaction Status API Documentation**
+# Transaction Status API
 
 ---
 
@@ -641,7 +641,7 @@ GET /transaction-status/:customOrderId
 ---
 
 ### **Description**
-This endpoint retrieves all transaction statuses (`OrderStatus` entries) associated with a specific `customOrderId`. Since multiple transactions can exist for a single order, the response includes all related `OrderStatus` entries.
+This endpoint retrieves all transaction statuses (from aggregated transactions) associated with a specific `customOrderId`. Since multiple transactions can exist for a single order, the response includes all related `OrderStatus` entries.
 
 ---
 
