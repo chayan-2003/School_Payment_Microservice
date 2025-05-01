@@ -625,10 +625,6 @@ You can access the Postman collection using the following link:
 
 ---
 
-Certainly! Here's the updated `README.md` section with a **separate heading** for the `.env` configuration. You can **copy-paste** this directly into your `README.md` file:
-
----
-
 ###  Environment Variables (`.env`)
 
 
@@ -639,8 +635,6 @@ MONGO_URI=mongodb+srv://chayanghosh185:chaya@cluster0.bdiz4vu.mongodb.net/bookin
 JWT_SECRET=0LxQYpsZOSlshGtO9F0as3bd19qYn4TZ
 JWT_EXPIRY=10h
 
-PG_SECRET_KEY=edvtest01
-PG_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cnVzdGVlSWQiOiI2NWIwZTU1MmRkMzE5NTBhOWI0MWM1YmEiLCJJbmRleE9mQXBpS2V5Ijo2LCJpYXQiOjE3MTE2MjIyNzAsImV4cCI6MTc0MzE3OTg3MH0.Rye77Dp59GGxwCmwWekJHRj6edXWJnff9finjMhxKuw
 ```
 
 .
