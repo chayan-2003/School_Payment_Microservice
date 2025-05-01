@@ -1,6 +1,6 @@
 
 
-### Auth  API 
+# Auth  API 
 
 **Base URL**:  
 ```
