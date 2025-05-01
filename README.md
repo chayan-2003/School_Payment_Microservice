@@ -1,3 +1,14 @@
+### **Backend Documentation Index**
+
+1. **Overview and Assumptions**  
+2. **Comprehensive API Documentation**  
+   - Usage  
+   - Examples  
+   - Service Layer Flow  
+   - Security Considerations  
+3. **Postman Collection and ENV Variables**  
+4. **Setup and Installation Guide**  
+
 #  Overview and Design Assumptions
 
 
@@ -39,6 +50,8 @@ The behavior is as follows:
 
 
 ---
+#  Comprehensive API Documentation 
+
 
 # Auth  API 
 
@@ -47,7 +60,7 @@ The behavior is as follows:
 https://school-payment-microservice.onrender.com
 ```
 
-This API provides authentication features, including user registration, login, and logout, using secure cookie-based JWTs. It ensures that user data is handled securely by hashing passwords and generating JWT tokens for session management.
+
 
 ---
 
@@ -355,7 +368,7 @@ This endpoint allows users to create a payment request by passing payment detail
 ---
 
 
-#Transactions  API 
+# Transactions  API 
 
 **Base URL**:  
 ```
@@ -489,7 +502,7 @@ Thanks for the detailed context. Based on your previous message, here's the **cl
 
 ---
 
-#Webhook  API 
+# Webhook  API 
 
 ## Base URL:
 ```
@@ -772,10 +785,10 @@ Authorization: Bearer <JWT token>
 
 ---
 
-###  **Postman Collection Instructions**
+# Postman Collection Instructions
 
 You can access the Postman collection using the following link:  
- [Postman Collection Link](https://blue-star-364034.postman.co/workspace/My-Workspace~d953dd8c-e295-43ee-8350-d0c704ee7809/request/28705488-51c3fd6c-393f-4684-bb06-04e60c74b7bf)
+ [Postman Collection Link](https://blue-star-364034.postman.co/workspace/My-Workspace~d953dd8c-e295-43ee-8350-d0c704ee7809/collection/28705488-16c7dc78-3f5d-4017-8447-6210bc269512?action=share&creator=28705488)
 
 #### **Usage Flow**
 1. **Register**  
@@ -806,7 +819,142 @@ JWT_EXPIRY=10h
 
 ```
 
-.
+### **Setup and Installation Guide**
+
+This guide provides step-by-step instructions to set up and run the Payment Microservices application built with NestJS, Prisma, and MongoDB.
+
+---
+
+### **Prerequisites**
+
+Before you begin, ensure you have the following installed on your system:
+
+1. **Node.js** (v16 or later)  
+   Download and install from [Node.js Official Website](https://nodejs.org/).
+
+2. **npm** (Node Package Manager)  
+   Comes bundled with Node.js.
+
+3. **MongoDB**  
+   Install and run MongoDB locally or use a cloud-based MongoDB service like [MongoDB Atlas](https://www.mongodb.com/atlas).
+
+4. **Git**  
+   Install Git from [Git Official Website](https://git-scm.com/).
+
+---
+
+### **Installation Steps**
+
+#### **1. Clone the Repository**
+Clone the project repository to your local machine:
+```bash
+git clone <repository-url>
+```
+Replace `<repository-url>` with the actual URL of the repository.
+
+#### **2. Navigate to the Project Directory**
+```bash
+cd payment_microservices
+```
+
+#### **3. Install Dependencies**
+Install the required Node.js packages:
+```bash
+npm install
+```
+
+---
+
+### **Environment Configuration**
+
+#### **1. Create a .env File**
+Create a .env file in the root directory of the project and add the following environment variables:
+
+```env
+mongo_uri=mongodb+srv://chayanghosh185:chaya@cluster0.bdiz4vu.mongodb.net/booking?retryWrites=true&w=majority
+JWT_SECRET=0LxQYpsZOSlshGtO9F0as3bd19qYn4TZ
+PG_SECRET_KEY=edvtest01
+PG_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cnVzdGVlSWQiOiI2NWIwZTU1MmRkMzE5NTBhOWI0MWM1YmEiLCJJbmRleE9mQXBpS2V5Ijo2LCJpYXQiOjE3MTE2MjIyNzAsImV4cCI6MTc0MzE3OTg3MH0.Rye77Dp59GGxwCmwWekJHRj6edXWJnff9finjMhxKuw
+JWT_EXPIRY=10h
+```
+
+
+
+---
+
+### **Prisma Setup**
+
+#### **1. Generate Prisma Client**
+Run the following command to generate the Prisma client:
+```bash
+npx prisma generate
+```
+
+#### **2. Apply Database Migrations**
+If you have defined migrations, apply them to the database:
+```bash
+npx prisma migrate dev
+```
+
+#### **3. Verify Prisma Integration**
+Ensure the `PrismaModule` is imported in the `AppModule`:
+```typescript
+import { Module } from '@nestjs/common';
+import { PrismaModule } from 'prisma/prisma.module';
+
+@Module({
+  imports: [
+    PrismaModule,
+    // Other modules...
+  ],
+})
+export class AppModule {}
+```
+
+---
+
+### **Running the Application**
+
+#### **1. Start the Development Server**
+Run the application in development mode:
+```bash
+npm run start:dev
+```
+
+#### **2. Access the Application**
+The application will be available at:
+```
+http://localhost:3000
+```
+
+---
+
+### **Project Structure**
+
+The project follows the modular structure provided by NestJS. Below is an overview of the key modules:
+
+- **`auth`**: Handles authentication and authorization.
+- **`transactions`**: Manages order transactions.
+- **`transaction-status`**: Provides APIs to retrieve transaction statuses.
+- **`webhook`**: Handles incoming webhook events.
+- **`payment`**: Manages payment-related operations.
+- **`users`**: Manages user-related operations.
+
+---
+
+### **Common Commands**
+
+| Command                     | Description                                |
+|-----------------------------|--------------------------------------------|
+| `npm run start`             | Start the application in production mode. |
+| `npm run start:dev`         | Start the application in development mode.|
+| `npm run build`             | Build the application for production.     |
+| `npx prisma generate`       | Generate the Prisma client.               |
+| `npx prisma migrate dev`    | Apply database migrations.                |
+
+---
+
+
 
 
 
