@@ -481,7 +481,7 @@ Thanks for the detailed context. Based on your previous message, here's the **cl
 ### `POST /webhook`
 
 ### Description:
-This endpoint receives webhook events from an external payment gateway to update the transaction status of a specific order. Authentication via JWT is required to ensure only authorized systems or users can send such updates.
+This endpoint receives webhook events from an external payment gateway to update the information of order_Status. Authentication via JWT is required to ensure only authorized systems or users can send such updates.
 
 ---
 
