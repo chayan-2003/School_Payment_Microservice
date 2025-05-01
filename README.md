@@ -39,6 +39,8 @@ The behavior is as follows:
 
 
 ---
+#  Comprehensive API Documentation 
+
 
 # Auth  API 
 
@@ -806,7 +808,152 @@ JWT_EXPIRY=10h
 
 ```
 
-.
+### **Setup and Installation Guide**
+
+This guide provides step-by-step instructions to set up and run the Payment Microservices application built with NestJS.
+
+---
+
+### **Prerequisites**
+
+Before you begin, ensure you have the following installed on your system:
+
+1. **Node.js** (v16 or later)  
+   Download and install from [Node.js Official Website](https://nodejs.org/).
+
+2. **npm** (Node Package Manager)  
+   Comes bundled with Node.js.
+
+3. **MongoDB**  
+   Install and run MongoDB locally or use a cloud-based MongoDB service like [MongoDB Atlas](https://www.mongodb.com/atlas).
+
+4. **Git**  
+   Install Git from [Git Official Website](https://git-scm.com/).
+
+---
+
+### **Installation Steps**
+
+#### **1. Clone the Repository**
+Clone the project repository to your local machine:
+```bash
+git clone <repository-url>
+```
+Replace `<repository-url>` with the actual URL of the repository.
+
+#### **2. Navigate to the Project Directory**
+```bash
+cd payment_microservices
+```
+
+#### **3. Install Dependencies**
+Install the required Node.js packages:
+```bash
+npm install
+```
+
+---
+
+### **Environment Configuration**
+
+#### **1. Create a .env File**
+Create a .env file in the root directory of the project and add the following environment variables:
+
+```env
+# MongoDB Connection
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/<database>?retryWrites=true&w=majority
+
+# JWT Secret
+JWT_SECRET=your_jwt_secret
+
+# Webhook Secret
+WEBHOOK_SECRET=your_webhook_secret
+
+# JWT Expiry
+JWT_EXPIRY=10h
+
+# Payment Gateway API Key
+PG_API_KEY=your_pg_api_key
+
+# Payment Gateway Secret Key
+PG_SECRET_KEY=your_pg_secret_key
+```
+
+Replace the placeholder values (`<username>`, `<password>`, `<cluster-url>`, `<database>`, etc.) with your actual configuration.
+
+#### **2. Update Configuration**
+Ensure that the `ConfigModule` is properly set up in the `AppModule` to load the .env file:
+```typescript
+import { ConfigModule } from '@nestjs/config';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    // Other modules...
+  ],
+})
+export class AppModule {}
+```
+
+---
+
+### **Running the Application**
+
+#### **1. Start the Development Server**
+Run the application in development mode:
+```bash
+npm run start:dev
+```
+
+#### **2. Access the Application**
+The application will be available at:
+```
+http://localhost:3000
+```
+
+---
+
+### **Project Structure**
+
+The project follows the modular structure provided by NestJS. Below is an overview of the key modules:
+
+- **`auth`**: Handles authentication and authorization.
+- **`transactions`**: Manages order transactions.
+- **`transaction-status`**: Provides APIs to retrieve transaction statuses.
+- **`webhook`**: Handles incoming webhook events.
+- **`payment`**: Manages payment-related operations.
+- **`users`**: Manages user-related operations.
+
+---
+
+### **Common Commands**
+
+| Command                     | Description                                |
+|-----------------------------|--------------------------------------------|
+| `npm run start`             | Start the application in production mode. |
+| `npm run start:dev`         | Start the application in development mode.|
+| `npm run build`             | Build the application for production.     |
+
+---
+
+### **Troubleshooting**
+
+1. **MongoDB Connection Issues**:
+   - Ensure MongoDB is running locally or the `MONGO_URI` in the .env file points to a valid MongoDB instance.
+
+2. **JWT Authentication Issues**:
+   - Ensure the `JWT_SECRET` in the .env file matches the secret used to generate tokens.
+
+3. **Webhook Signature Validation**:
+   - Ensure the `WEBHOOK_SECRET` in the .env file matches the secret used by the webhook sender.
+
+---
+
+### **Conclusion**
+
+This guide provides all the necessary steps to set up, configure, and run the Payment Microservices application. If you encounter any issues, refer to the troubleshooting section or consult the project documentation.
 
 
 
