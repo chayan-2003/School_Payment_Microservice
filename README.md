@@ -1,6 +1,6 @@
 
 
-### **Auth  API Documentation**
+### **Auth  API **
 
 **Base URL**:  
 ```
@@ -176,11 +176,11 @@ Got it! Here’s the revised version of the API documentation, with the Service 
 
 ---
 
-## **API Documentation: Payments API**
+## ** Payments API**
 
 ### **Base URL**:
 ```
-/api/payments
+https://school-payment-microservice.onrender.com/
 ```
 
 ---
@@ -199,9 +199,10 @@ This endpoint allows users to create a payment request by passing payment detail
 ##### **Request Body**:
 ```json
 {
-  "school_id": "60d21b4667d0d8992e610c85", 
-  "amount": "5000", 
-  "callback_url": "https://www.example.com/callback"
+  "school_id": "65b0e6293e9f76a9694d84b4",
+  "amount": "1",
+  "callback_url": "https://google.com"
+
 }
 ```
 
@@ -218,9 +219,9 @@ This endpoint allows users to create a payment request by passing payment detail
 ##### **Response** (Success):
 ```json
 {
-  "collect_request_id": "some_unique_id",
-  "collect_request_url": "https://payment-gateway.com/collect?id=some_unique_id",
-  "sign": "generated_sign_here"
+    "collect_request_id": "6813ca22d155691054fe8ed9",
+    "collect_request_url": "https://dev-payments.edviron.com/edviron-pg/redirect?session_id=session_M8VAZkf2rmfBgjAp9KxbMw_xcLRCzupRJcc5QmA0_4Gfkqf_xSXEVzxWH_8_C1aVpVU6yd4VMNwhx0yqwASYlM95xBkImZCKfX0kkfMd0TjRa_8PyKA5zUlpVBHeDApaymentpayment&collect_request_id=6813ca22d155691054fe8ed9&amount=1.00&&platform_charges=%5B%7B%22platform_type%22%3A%22UPI%22%2C%22payment_mode%22%3A%22Others%22%2C%22range_charge%22%3A%5B%7B%22charge%22%3A2%2C%22charge_type%22%3A%22FLAT%22%2C%22upto%22%3Anull%7D%5D%7D%2C%7B%22platform_type%22%3A%22CreditCard%22%2C%22payment_mode%22%3A%22Others%22%2C%22range_charge%22%3A%5B%7B%22charge%22%3A2%2C%22charge_type%22%3A%22PERCENT%22%2C%22upto%22%3Anull%7D%5D%7D%2C%7B%22platform_type%22%3A%22DebitCard%22%2C%22payment_mode%22%3A%22Others%22%2C%22range_charge%22%3A%5B%7B%22charge%22%3A20%2C%22charge_type%22%3A%22FLAT%22%2C%22upto%22%3A100%7D%5D%7D%2C%7B%22platform_type%22%3A%22NetBanking%22%2C%22payment_mode%22%3A%22Others%22%2C%22range_charge%22%3A%5B%7B%22charge%22%3A1%2C%22charge_type%22%3A%22FLAT%22%2C%22upto%22%3Anull%7D%5D%7D%2C%7B%22platform_type%22%3A%22Wallet%22%2C%22payment_mode%22%3A%22Others%22%2C%22range_charge%22%3A%5B%7B%22charge%22%3A20%2C%22charge_type%22%3A%22PERCENT%22%2C%22upto%22%3Anull%7D%5D%7D%2C%7B%22platform_type%22%3A%22PayLater%22%2C%22payment_mode%22%3A%22Others%22%2C%22range_charge%22%3A%5B%7B%22charge%22%3A20%2C%22charge_type%22%3A%22PERCENT%22%2C%22upto%22%3Anull%7D%5D%7D%2C%7B%22platform_type%22%3A%22CardLess%20EMI%22%2C%22payment_mode%22%3A%22Others%22%2C%22range_charge%22%3A%5B%7B%22charge%22%3A20%2C%22charge_type%22%3A%22PERCENT%22%2C%22upto%22%3Anull%7D%5D%7D%2C%7B%22platform_type%22%3A%22DebitCard%22%2C%22payment_mode%22%3A%22Visa%22%2C%22range_charge%22%3A%5B%7B%22charge%22%3A1%2C%22charge_type%22%3A%22PERCENT%22%2C%22upto%22%3A100%7D%2C%7B%22charge%22%3A10%2C%22charge_type%22%3A%22FLAT%22%2C%22upto%22%3Anull%7D%5D%7D%2C%7B%22platform_type%22%3A%22NetBanking%22%2C%22payment_mode%22%3A%22AU%20Small%20Finance%20Bank%22%2C%22range_charge%22%3A%5B%7B%22charge%22%3A10%2C%22charge_type%22%3A%22FLAT%22%2C%22upto%22%3A20%7D%2C%7B%22charge%22%3A0%2C%22charge_type%22%3A%22PERCENT%22%2C%22upto%22%3Anull%7D%5D%7D%5D&school_name=Some-School",
+    "sign": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2xsZWN0X3JlcXVlc3RfaWQiOiI2ODEzY2EyMmQxNTU2OTEwNTRmZThlZDkiLCJjb2xsZWN0X3JlcXVlc3RfdXJsIjoiaHR0cHM6Ly9kZXYtcGF5bWVudHMuZWR2aXJvbi5jb20vZWR2aXJvbi1wZy9yZWRpcmVjdD9zZXNzaW9uX2lkPXNlc3Npb25fTThWQVprZjJybWZCZ2pBcDlLeGJNd194Y0xSQ3p1cFJKY2M1UW1BMF80R2ZrcWZfeFNYRVZ6eFdIXzhfQzFhVnBWVTZ5ZDRWTU53aHgweXF3QVNZbE05NXhCa0ltWkNLZlgwa2tmTWQwVGpSYV84UHlLQTV6VWxwVkJIZURBcGF5bWVudHBheW1lbnQmY29sbGVjdF9yZXF1ZXN0X2lkPTY4MTNjYTIyZDE1NTY5MTA1NGZlOGVkOSZhbW91bnQ9MS4wMCYmcGxhdGZvcm1fY2hhcmdlcz0lNUIlN0IlMjJwbGF0Zm9ybV90eXBlJTIyJTNBJTIyVVBJJTIyJTJDJTIycGF5bWVudF9tb2RlJTIyJTNBJTIyT3RoZXJzJTIyJTJDJTIycmFuZ2VfY2hhcmdlJTIyJTNBJTVCJTdCJTIyY2hhcmdlJTIyJTNBMiUyQyUyMmNoYXJnZV90eXBlJTIyJTNBJTIyRkxBVCUyMiUyQyUyMnVwdG8lMjIlM0FudWxsJTdEJTVEJTdEJTJDJTdCJTIycGxhdGZvcm1fdHlwZSUyMiUzQSUyMkNyZWRpdENhcmQlMjIlMkMlMjJwYXltZW50X21vZGUlMjIlM0ElMjJPdGhlcnMlMjIlMkMlMjJyYW5nZV9jaGFyZ2UlMjIlM0ElNUIlN0IlMjJjaGFyZ2UlMjIlM0EyJTJDJTIyY2hhcmdlX3R5cGUlMjIlM0ElMjJQRVJDRU5UJTIyJTJDJTIydXB0byUyMiUzQW51bGwlN0QlNUQlN0QlMkMlN0IlMjJwbGF0Zm9ybV90eXBlJTIyJTNBJTIyRGViaXRDYXJkJTIyJTJDJTIycGF5bWVudF9tb2RlJTIyJTNBJTIyT3RoZXJzJTIyJTJDJTIycmFuZ2VfY2hhcmdlJTIyJTNBJTVCJTdCJTIyY2hhcmdlJTIyJTNBMjAlMkMlMjJjaGFyZ2VfdHlwZSUyMiUzQSUyMkZMQVQlMjIlMkMlMjJ1cHRvJTIyJTNBMTAwJTdEJTVEJTdEJTJDJTdCJTIycGxhdGZvcm1fdHlwZSUyMiUzQSUyMk5ldEJhbmtpbmclMjIlMkMlMjJwYXltZW50X21vZGUlMjIlM0ElMjJPdGhlcnMlMjIlMkMlMjJyYW5nZV9jaGFyZ2UlMjIlM0ElNUIlN0IlMjJjaGFyZ2UlMjIlM0ExJTJDJTIyY2hhcmdlX3R5cGUlMjIlM0ElMjJGTEFUJTIyJTJDJTIydXB0byUyMiUzQW51bGwlN0QlNUQlN0QlMkMlN0IlMjJwbGF0Zm9ybV90eXBlJTIyJTNBJTIyV2FsbGV0JTIyJTJDJTIycGF5bWVudF9tb2RlJTIyJTNBJTIyT3RoZXJzJTIyJTJDJTIycmFuZ2VfY2hhcmdlJTIyJTNBJTVCJTdCJTIyY2hhcmdlJTIyJTNBMjAlMkMlMjJjaGFyZ2VfdHlwZSUyMiUzQSUyMlBFUkNFTlQlMjIlMkMlMjJ1cHRvJTIyJTNBbnVsbCU3RCU1RCU3RCUyQyU3QiUyMnBsYXRmb3JtX3R5cGUlMjIlM0ElMjJQYXlMYXRlciUyMiUyQyUyMnBheW1lbnRfbW9kZSUyMiUzQSUyMk90aGVycyUyMiUyQyUyMnJhbmdlX2NoYXJnZSUyMiUzQSU1QiU3QiUyMmNoYXJnZSUyMiUzQTIwJTJDJTIyY2hhcmdlX3R5cGUlMjIlM0ElMjJQRVJDRU5UJTIyJTJDJTIydXB0byUyMiUzQW51bGwlN0QlNUQlN0QlMkMlN0IlMjJwbGF0Zm9ybV90eXBlJTIyJTNBJTIyQ2FyZExlc3MlMjBFTUklMjIlMkMlMjJwYXltZW50X21vZGUlMjIlM0ElMjJPdGhlcnMlMjIlMkMlMjJyYW5nZV9jaGFyZ2UlMjIlM0ElNUIlN0IlMjJjaGFyZ2UlMjIlM0EyMCUyQyUyMmNoYXJnZV90eXBlJTIyJTNBJTIyUEVSQ0VOVCUyMiUyQyUyMnVwdG8lMjIlM0FudWxsJTdEJTVEJTdEJTJDJTdCJTIycGxhdGZvcm1fdHlwZSUyMiUzQSUyMkRlYml0Q2FyZCUyMiUyQyUyMnBheW1lbnRfbW9kZSUyMiUzQSUyMlZpc2ElMjIlMkMlMjJyYW5nZV9jaGFyZ2UlMjIlM0ElNUIlN0IlMjJjaGFyZ2UlMjIlM0ExJTJDJTIyY2hhcmdlX3R5cGUlMjIlM0ElMjJQRVJDRU5UJTIyJTJDJTIydXB0byUyMiUzQTEwMCU3RCUyQyU3QiUyMmNoYXJnZSUyMiUzQTEwJTJDJTIyY2hhcmdlX3R5cGUlMjIlM0ElMjJGTEFUJTIyJTJDJTIydXB0byUyMiUzQW51bGwlN0QlNUQlN0QlMkMlN0IlMjJwbGF0Zm9ybV90eXBlJTIyJTNBJTIyTmV0QmFua2luZyUyMiUyQyUyMnBheW1lbnRfbW9kZSUyMiUzQSUyMkFVJTIwU21hbGwlMjBGaW5hbmNlJTIwQmFuayUyMiUyQyUyMnJhbmdlX2NoYXJnZSUyMiUzQSU1QiU3QiUyMmNoYXJnZSUyMiUzQTEwJTJDJTIyY2hhcmdlX3R5cGUlMjIlM0ElMjJGTEFUJTIyJTJDJTIydXB0byUyMiUzQTIwJTdEJTJDJTdCJTIyY2hhcmdlJTIyJTNBMCUyQyUyMmNoYXJnZV90eXBlJTIyJTNBJTIyUEVSQ0VOVCUyMiUyQyUyMnVwdG8lMjIlM0FudWxsJTdEJTVEJTdEJTVEJnNjaG9vbF9uYW1lPVNvbWUtU2Nob29sIiwiY3VzdG9tX29yZGVyX2lkIjpudWxsLCJleHAiOjE3NDYxMzQ1OTR9.dPXDJ0Wrs5KVMq0oZ7IS0xyuVEtyugHgDB8fvaURv28"
 }
 ```
 
@@ -313,41 +314,19 @@ This endpoint allows users to create a payment request by passing payment detail
 
 ---
 
-## Base URL
-`/transactions`
+
+### **Transactions  API **
+
+**Base URL**:  
+```
+https://school-payment-microservice.onrender.com/transactions
+```
 
 ### Endpoints
 
-#### 1. **POST /create-payment**
-**Description**:  
-This endpoint allows users to create a payment request by passing payment details. It requires a valid JWT token in the Authorization header for security.
 
-**Request Headers**:
-```json
-Authorization: Bearer <token>
-```
 
-**Request Body**:
-```json
-{
-  "school_id": "60d21b4667d0d8992e610c85",
-  "amount": "5000",
-  "callback_url": "https://www.example.com/callback"
-}
-```
-**Fields**:
-- `school_id` (string, required): MongoDB ObjectId of the school. Must match the format of a valid ObjectId.
-- `amount` (string, required): Amount to be paid (numeric string).
-- `callback_url` (string, required): A valid URL where the callback after the payment will be sent.
-
-**Validation Requirements**:
-- `school_id`: Should be a valid MongoDB ObjectId.
-- `amount`: Should be a numeric string.
-- `callback_url`: Should be a valid URL.
-
----
-
-#### 2. **GET /**
+#### 1. **GET /**
 **Description**:  
 This endpoint fetches all transactions with various filtering options like status, school_id, sorting, and pagination. The service uses MongoDB **aggregation** to efficiently process and filter the data based on the given query parameters.
 
@@ -470,11 +449,11 @@ Thanks for the detailed context. Based on your previous message, here's the **cl
 
 ---
 
-# API Documentation: Webhook Endpoint
+### **Webhook  API **
 
 ## Base URL:
 ```
-/webhook
+https://school-payment-microservice.onrender.com
 ```
 
 ## Endpoint:
@@ -495,9 +474,9 @@ This endpoint receives webhook events from an external payment gateway to update
 
 ```json
 {
-  "status": 1,
+  "status": 200,
   "order_info": {
-    "order_id": "653ad7cf15e4f31234567890",
+    "order_id": "6810d9689c29991d4b81d0ae",
     "order_amount": 1200,
     "transaction_amount": 1200,
     "gateway": "razorpay",
@@ -604,7 +583,7 @@ Sure! Here's a clear and professional instruction you can **directly copy-paste*
 
 ---
 
-### 🔗 **Postman Collection Instructions**
+###  **Postman Collection Instructions**
 
 You can access the Postman collection using the following link:  
  [Postman Collection Link](https://blue-star-364034.postman.co/workspace/My-Workspace~d953dd8c-e295-43ee-8350-d0c704ee7809/request/28705488-51c3fd6c-393f-4684-bb06-04e60c74b7bf)
@@ -630,9 +609,10 @@ You can access the Postman collection using the following link:
 
 
 ```
-MONGO_URI=mongodb+srv://chayanghosh185:chaya@cluster0.bdiz4vu.mongodb.net/booking?retryWrites=true&w=majority
-
+mongo_uri=mongodb+srv://chayanghosh185:chaya@cluster0.bdiz4vu.mongodb.net/booking?retryWrites=true&w=majority
 JWT_SECRET=0LxQYpsZOSlshGtO9F0as3bd19qYn4TZ
+PG_SECRET_KEY=edvtest01
+PG_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cnVzdGVlSWQiOiI2NWIwZTU1MmRkMzE5NTBhOWI0MWM1YmEiLCJJbmRleE9mQXBpS2V5Ijo2LCJpYXQiOjE3MTE2MjIyNzAsImV4cCI6MTc0MzE3OTg3MH0.Rye77Dp59GGxwCmwWekJHRj6edXWJnff9finjMhxKuw
 JWT_EXPIRY=10h
 
 ```
