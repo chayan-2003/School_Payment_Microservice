@@ -2,16 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { MongodbService } from '../transactions/mongodb.service';
 import { UpdateTransactionStatusDto } from './dto/webhook.dto';
 import { ObjectId } from 'mongodb';
-import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class WebhookService {
-  constructor(private readonly mongoService: MongodbService, private prisma:PrismaService) {}
+  constructor(private readonly mongoService: MongodbService) {}
 
   async updateTransactionStatus(updateTransactionStatusDto: UpdateTransactionStatusDto): Promise<void> {
     const { order_info } = updateTransactionStatusDto;
 
-    // Prepare the update data based on the order_info
+  
     const updateData = {
       order_amount: order_info.order_amount,
       transaction_amount: order_info.transaction_amount,
@@ -36,26 +35,28 @@ export class WebhookService {
         { $set: updateData },
       );
 
-    await this.prisma.WebhookLog.create({
-      data: {
-        order_id: order_info.order_id,
-        order_amount: order_info.order_amount,
-        transaction_amount: order_info.transaction_amount,
-        gateway: order_info.gateway,
-        bank_reference: order_info.bank_reference,
-        status: order_info.status,
-        payment_mode: order_info.payment_mode,
-        payment_details: order_info.payment_details,
-        payment_message: order_info.payment_message,
-        payment_time: new Date(order_info.payment_time),
-        error_message: order_info.error_message,
-        // receivedAt will auto default to `now()`
-      },
-    });
     if (result.matchedCount === 0) {
       throw new Error(`No transaction found with order_id: ${order_info.order_id}`);
     }
 
-    console.log(`Transaction updated successfully for order_id: ${order_info.order_id}`);
+    // Create a webhook log in the MongoDB collection
+    const webhookLogData = {
+      order_id: order_info.order_id,
+      order_amount: order_info.order_amount,
+      transaction_amount: order_info.transaction_amount,
+      gateway: order_info.gateway,
+      bank_reference: order_info.bank_reference,
+      status: order_info.status,
+      payment_mode: order_info.payment_mode,
+      payment_details: order_info.payment_details,
+      payment_message: order_info.payment_message,
+      payment_time: new Date(order_info.payment_time),
+      error_message: order_info.error_message,
+      receivedAt: new Date(), // Add a timestamp for when the webhook was received
+    };
+
+    await this.mongoService.getCollection('WebhookLog').insertOne(webhookLogData);
+
+    console.log(`Transaction updated and webhook log created for order_id: ${order_info.order_id}`);
   }
 }

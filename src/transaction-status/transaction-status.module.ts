@@ -6,6 +6,6 @@ import { JwtStrategy } from 'src/auth/jwt.strategy';
 
 @Module({
   controllers: [TransactionStatusController],
-  providers: [TransactionStatusService, MongodbService, JwtStrategy], // Include JwtStrategy if you are using JWT authentication
+  providers: [TransactionStatusService, MongodbService, JwtStrategy],
 })
 export class TransactionStatusModule {}
