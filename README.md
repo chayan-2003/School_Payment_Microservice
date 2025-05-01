@@ -1,6 +1,6 @@
-## Order and Payment System Documentation
+#  Overview and Design Assumptions
 
-### Overview and Design Assumptions
+
 
 This system manages order creation and tracks associated payment transactions. Based on the provided requirements and schema, a **one-to-many relationship** is assumed between the `Order` and `OrderStatus` models. That is, a single order may result in multiple transaction records. This allows for handling multiple payment attempts or updates from the payment gateway.
 
