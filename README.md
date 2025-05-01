@@ -598,7 +598,9 @@ When a webhook request is received, the `WebhookService.updateTransactionStatus(
 - On success, returns `{ message: 'Transaction updated successfully' }`.
 - On failure, returns error message with appropriate status code.
 
----
+### **Postman Collection**
+-This is the collection link https://blue-star-364034.postman.co/workspace/My-Workspace~d953dd8c-e295-43ee-8350-d0c704ee7809/request/28705488-51c3fd6c-393f-4684-bb06-04e60c74b7bf
+-The general order would be auth/register (change the body and register )->auth/login and after the cookie is generated all the routes are accessible.
 
 
 
