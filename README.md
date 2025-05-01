@@ -1,45 +1,42 @@
+## Order and Payment System Documentation
+
 ### Overview and Design Assumptions
 
-This system manages the creation of orders and tracks associated payment transactions. Based on the provided documentation and understanding of the requirements, the relationship between the `Order` and `OrderStatus` models is assumed to be one-to-many. That is, a single `Order` may be associated with multiple `OrderStatus` records. This design supports scenarios such as multiple payment attempts, retries, or updates from the payment gateway.
+This system manages order creation and tracks associated payment transactions. Based on the provided requirements and schema, a **one-to-many relationship** is assumed between the `Order` and `OrderStatus` models. That is, a single order may result in multiple transaction records. This allows for handling multiple payment attempts or updates from the payment gateway.
 
-As a consequence of this structure:
+Due to this relationship:
 
-- There can be multiple `OrderStatus` records with the same `collect_id` (since each references the same `Order._id`).
-- Similarly, the `customOrderId` field in the `Order` model, while unique at the `Order` level, may appear in multiple records when aggregating transaction-level data (due to multiple statuses per order).
+- There can be **multiple `OrderStatus` records with the same `collect_id`**, each reflecting a different payment event tied to a single order.
+- Similarly, the `customOrderId`, which uniquely identifies each order (e.g., `ORD-1001`, `ORD-1002`, etc.), **may appear multiple times** when viewing aggregated transaction data, since each associated transaction would reference the same `customOrderId`.
 
-This directly impacts the behavior of the `/transaction-status/:customOrderId` API, which is designed to return multiple transaction records for a single custom order ID. This is intentional and ensures visibility into all payment attempts or states associated with a particular order.
+This design supports transparency and flexibility in scenarios where payment retries or partial transactions occur.
 
-Additional fields may be returned in the API response to provide complete visibility into each transaction's details, which is useful for debugging and operational transparency.
+### `customOrderId` Format and Considerations
 
-### Schema Summary
+Each order is assigned a `customOrderId` to make external referencing and communication more human-readable and standardized. The format used (e.g., `ORD-1001`, `ORD-1002`) is intended to be sequential and meaningful for business operations.
 
-**Order**
+Although `customOrderId` is unique within the `Order` schema, when joined with transaction-level records, it can appear multiple times — once per transaction attempt — due to the one-to-many relationship with `OrderStatus`.
 
-Captures order-related information such as school and trustee association, student details, gateway metadata, and a custom identifier for tracking purposes.
+Therefore, consumers of this identifier must be aware that querying by `customOrderId` may return multiple records reflecting the transaction history for a single order.
 
-**OrderStatus**
+### API: `/transaction-status/customOrderId/:id`
 
-Represents transaction-level data. Each record contains details such as amounts, payment mode, gateway status, timestamps, and references the parent order through `collect_id`. Since multiple `OrderStatus` records can exist for a single order, `collect_id` values may repeat.
+This endpoint is designed to return **all transactions associated with a given `customOrderId`**. This includes every payment attempt or gateway response linked to the corresponding order.
 
-**WebhookLog**
-
-Captures raw webhook payloads from the payment gateway for traceability. This model is useful for maintaining an auditable history of events, especially in cases where payments are updated via external triggers.
+Key considerations:
+- Returns multiple entries to reflect the full transaction history.
+- More fields may be returned than originally expected, to aid in debugging and enhance transparency.
+- Each returned record includes all relevant transaction-level details from the `OrderStatus` schema.
 
 ### Webhook Behavior
 
-When a webhook is received from the payment gateway:
+Webhook notifications from the payment gateway are used to update transaction status in near real-time.
 
-- The `collect_id` from the webhook is matched against the `OrderStatus` table.
-- Since multiple `OrderStatus` entries may exist for a given `collect_id`, the system updates only the first matching record. This approach ensures deterministic behavior and avoids inconsistencies.
-- Every webhook received is logged in the `WebhookLog` table, allowing for future review or replay if needed.
+The behavior is as follows:
+- When a webhook is received, it contains a `collect_id` which is matched against the `OrderStatus` table.
+- Given the possibility of multiple `OrderStatus` records per `collect_id`, the system updates **only the first matching record** to ensure consistent and controlled updates.
+- Every webhook payload is stored in the `WebhookLog` collection to provide traceability and support for debugging or reconciliation.
 
-### API: `/transaction-status/:customOrderId`
-
-This endpoint retrieves all transaction status records associated with a specific `customOrderId`.
-
-Given the one-to-many relationship between `Order` and `OrderStatus`, multiple transactions may be returned for a single order. This accounts for cases like retries, partial attempts, or updates in payment status.
-
-This behavior is by design and ensures that clients receive a complete picture of the payment history associated with a particular order identifier.
 
 ---
 
