@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MongodbService } from '../transactions/mongodb.service';
-import { UpdateTransactionStatusDto } from './webhook.dto';
+import { UpdateTransactionStatusDto } from './dto/webhook.dto';
 import { ObjectId } from 'mongodb';
 import { PrismaService } from 'prisma/prisma.service';
 

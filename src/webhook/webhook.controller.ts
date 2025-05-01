@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { WebhookService } from './webhook.service';
-import { UpdateTransactionStatusDto } from './webhook.dto'; 
+import { UpdateTransactionStatusDto } from './dto/webhook.dto'; 
 import { JwtAuthGuard } from '../auth/jwt.guard';
 @Controller('webhook')
 @UseGuards(JwtAuthGuard) 

@@ -3,12 +3,12 @@
 import { Injectable } from '@nestjs/common';
 import { MongodbService } from '../transactions/mongodb.service'; 
 import { ObjectId } from 'mongodb';
-
+import { GetTransactionStatusDto } from './dto/get-transaction-status.dto';
 @Injectable()
 export class TransactionStatusService {
     constructor(private readonly mongoService: MongodbService) {}
-    async getTransactionStatus(customOrderId: string) {
-    
+    async getTransactionStatus(dto: GetTransactionStatusDto) {
+    const { customOrderId } = dto;
       
         const pipeline: any[] = [
           {

@@ -8,12 +8,13 @@ import { UsersModule } from './users/users.module';
 import { TransactionStatusModule } from './transaction-status/transaction-status.module';
 import { WebhookModule } from './webhook/webhook.module';
 import { PaymentModule } from './payment/payment.module';
-
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Makes environment variables globally available
+      isGlobal: true,
     }),
  
     TransactionsModule,
@@ -25,5 +26,7 @@ import { PaymentModule } from './payment/payment.module';
     PaymentModule,
  
   ],
+  controllers: [AppController], 
+  providers: [AppService], 
 })
 export class AppModule {}

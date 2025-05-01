@@ -1,29 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { MongodbService } from './mongodb.service';
 import { ObjectId } from 'mongodb';
-
+import { GetTransactionsDto } from './dto/get-transactions.dto';
+import { GetSchoolDto } from './dto/get-school.dto';
 @Injectable()
 export class TransactionsService {
-  constructor(private readonly mongoService: MongodbService) {}
+  constructor(private readonly mongoService: MongodbService) { }
 
-  async getAllTransactions(
-    status: string | string[],
-    school_id: string | string[],
-    sortBy: string = 'payment_time',
-    sortOrder: 'asc' | 'desc' = 'asc',
-    limit: number = 10,
-    offset: number = 0,
-    startDate?: string,
-    endDate?: string,
-  ) {
-    console.log('Received status:', status);
-    console.log('Received school_id:', school_id);
-    console.log('Sort by:', sortBy);
-    console.log('Sort order:', sortOrder);
-    console.log('Limit:', limit);
-    console.log('Offset:', offset);
-    console.log('Start Date:', startDate);
-    console.log('End Date:', endDate);
+
+  async getAllTransactions(dto: GetTransactionsDto) {
+    const {
+      school_id,
+
+      status,
+      sortBy = 'payment_time',
+      sortOrder = 'asc',
+      limit = '10',
+      page = '1',
+      startDate,
+      endDate,
+    } = dto;
+
+    const limitNumber = parseInt(limit, 10) || 10;
+    const pageNumber = parseInt(page, 10) || 1;
+    const offset = (pageNumber - 1) * limitNumber;
 
     const pipeline: any[] = [
       {
@@ -37,32 +37,28 @@ export class TransactionsService {
       { $unwind: '$order_status' },
     ];
 
-    // Apply status filter if provided
-    if (status) {
-      const statusArray = Array.isArray(status) ? status : status.split(',');
+    // Filter by status
+    if (status && status.length > 0) {
       pipeline.push({
         $match: {
-          $or: statusArray.map((s) => ({
+          $or: status.map((s) => ({
             'order_status.status': { $regex: new RegExp(`^${s}$`, 'i') },
           })),
         },
       });
     }
 
-    // Apply school_id filter if provided
-    if (school_id) {
-      const schoolIdArray = Array.isArray(school_id)
-        ? school_id.map((id) => new ObjectId(id))
-        : school_id.split(',').map((id) => new ObjectId(id));
-
+    // Filter by school_id
+    if (school_id && school_id.length > 0) {
+      const schoolObjectIds = school_id.map((id) => new ObjectId(id));
       pipeline.push({
         $match: {
-          school_id: { $in: schoolIdArray },
+          school_id: { $in: schoolObjectIds },
         },
       });
     }
 
-    // Apply date range filter for payment_time
+    // Filter by date range
     const dateFilter: any = {};
     if (startDate) {
       const start = new Date(startDate);
@@ -84,33 +80,33 @@ export class TransactionsService {
       });
     }
 
-    console.log('Pipeline after filters:', JSON.stringify(pipeline, null, 2));
-
-    // Add transaction amount field
     pipeline.push({
       $addFields: {
-        'order_status.transaction_amount': { $toDouble: '$order_status.transaction_amount' },
+        'order_status.transaction_amount': {
+          $toDouble: '$order_status.transaction_amount',
+        },
       },
     });
 
-    // Determine the sort field
-    let sortField = sortBy;
-    if (sortBy === 'transaction_amount') {
-      sortField = 'order_status.transaction_amount';
-    } else if (sortBy === 'order_amount') {
-      sortField = 'order_status.order_amount';
-    } else if (sortBy === 'status') {
-      sortField = 'order_status.status';
-    } else if (sortBy === 'payment_time') {
-      sortField = 'order_status.payment_time';
+    let sortField: string;
+    switch (sortBy) {
+      case 'transaction_amount':
+        sortField = 'order_status.transaction_amount';
+        break;
+      case 'order_amount':
+        sortField = 'order_status.order_amount';
+        break;
+      case 'status':
+        sortField = 'order_status.status';
+        break;
+      default:
+        sortField = 'order_status.payment_time';
     }
 
-    const sort = {};
+    const sort: any = {};
     sort[sortField] = sortOrder === 'asc' ? 1 : -1;
-
     pipeline.push({ $sort: sort });
 
-    // Project required fields
     pipeline.push({
       $project: {
         collect_id: '$_id',
@@ -120,39 +116,41 @@ export class TransactionsService {
         transaction_amount: '$order_status.transaction_amount',
         status: '$order_status.status',
         payment_time: '$order_status.payment_time',
-        custom_order_id: '$customOrderId', 
+        custom_order_id: '$customOrderId',
       },
     });
 
-
     pipeline.push({ $skip: offset });
-    pipeline.push({ $limit: limit });
+    pipeline.push({ $limit: limitNumber });
 
-  
-    const countPipeline = [
-      ...pipeline.slice(0, -2),
-      { $count: 'totalEntries' },
-    ];
+    const countPipeline = [...pipeline.slice(0, -2), { $count: 'totalEntries' }];
 
+    const transactions = await this.mongoService
+      .getCollection('Order')
+      .aggregate(pipeline)
+      .toArray();
 
-    const transactions = await this.mongoService.getCollection('Order').aggregate(pipeline).toArray();
-    const totalCountResult = await this.mongoService.getCollection('Order').aggregate(countPipeline).toArray();
+    const totalCountResult = await this.mongoService
+      .getCollection('Order')
+      .aggregate(countPipeline)
+      .toArray();
+
     const totalEntries = totalCountResult.length > 0 ? totalCountResult[0].totalEntries : 0;
+    const totalPages = Math.ceil(totalEntries / limitNumber);
 
-    const totalPages = Math.ceil(totalEntries / limit); 
     return {
       data: transactions,
       meta: {
-        pageNumber: Math.floor(offset / limit) + 1, 
-        pageSize: limit,
+        pageNumber,
+        pageSize: limitNumber,
         totalEntries,
         totalPages,
       },
     };
   }
-  async getTransactionsBySchool(schoolId: string) {
-    console.log('Fetching transactions for schoolId:', schoolId);
-  
+  async getTransactionsBySchool(dto: GetSchoolDto) {
+    const { school_id } = dto;
+
     const pipeline: any[] = [
       {
         $lookup: {
@@ -165,7 +163,7 @@ export class TransactionsService {
       { $unwind: '$order_status' },
       {
         $match: {
-          school_id: new ObjectId(schoolId), 
+          school_id: new ObjectId(school_id),
         },
       },
       {
@@ -180,9 +178,9 @@ export class TransactionsService {
         },
       },
     ];
-  
+
     console.log('Final Aggregation Pipeline:', JSON.stringify(pipeline, null, 2));
-  
+
     // Execute aggregation query
     return this.mongoService.getCollection('Order').aggregate(pipeline).toArray();
   }

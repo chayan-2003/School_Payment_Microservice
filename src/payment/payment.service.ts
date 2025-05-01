@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import * as jwt from 'jsonwebtoken';
-import { CreatePaymentDto } from '../payment/payment.dto'; // Adjust the import path as necessary
+import { CreatePaymentDto } from './dto/payment.dto'; // Adjust the import path as necessary
 
 @Injectable()
 export class PaymentsService {
