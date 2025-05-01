@@ -619,7 +619,156 @@ When a webhook request is received, the `WebhookService.updateTransactionStatus(
 - On success, returns `{ message: 'Transaction updated successfully' }`.
 - On failure, returns error message with appropriate status code.
 
-Sure! Here's a clear and professional instruction you can **directly copy-paste** to describe how to use your Postman collection:
+
+
+---
+### **Transaction Status API Documentation**
+
+---
+
+### **Base URL**
+```
+https://school-payment-microservice.onrender.com
+```
+
+---
+
+### **Endpoint**
+```
+GET /transaction-status/:customOrderId
+```
+
+---
+
+### **Description**
+This endpoint retrieves all transaction statuses (`OrderStatus` entries) associated with a specific `customOrderId`. Since multiple transactions can exist for a single order, the response includes all related `OrderStatus` entries.
+
+---
+
+### **Request Parameters**
+| Parameter         | Type   | Required | Description                                      |
+|--------------------|--------|----------|--------------------------------------------------|
+| `customOrderId`    | String | Yes      | The custom identifier for the order (e.g., `ORD-1001`). |
+
+---
+
+### **Request Headers**
+| Header            | Description                                      |
+|--------------------|--------------------------------------------------|
+| `Authorization`   | Bearer `<JWT token>` (A valid JWT token is required for authentication). |
+
+---
+
+### **Response**
+
+#### **Success**
+```json
+{
+  "customOrderId": "ORD-1001",
+  "transactions": [
+    {
+      "order_amount": 1200,
+      "transaction_amount": 1200,
+      "gateway": "razorpay",
+      "status": "SUCCESS",
+      "payment_mode": "UPI",
+      "payment_time": "2025-04-30T10:20:30.000Z"
+    },
+    {
+      "order_amount": 1200,
+      "transaction_amount": 600,
+      "gateway": "razorpay",
+      "status": "PENDING",
+      "payment_mode": "UPI",
+      "payment_time": "2025-04-30T10:10:30.000Z"
+    }
+  ]
+}
+```
+
+#### **Error**
+```json
+{
+  "message": "Failed to retrieve transaction statuses",
+  "error": "Detailed error message"
+}
+```
+
+---
+
+### **Error Codes**
+| Status Code       | Description                                      |
+|--------------------|--------------------------------------------------|
+| `400 Bad Request` | Invalid `customOrderId` or missing required fields. |
+| `401 Unauthorized`| JWT token missing or invalid.                    |
+| `404 Not Found`   | No transactions found for the given `customOrderId`. |
+| `500 Internal Server Error` | Failure in processing the request or internal service error. |
+
+---
+
+### **Field Details**
+| Field Name         | Type   | Description                                      |
+|---------------------|--------|--------------------------------------------------|
+| `customOrderId`     | String | The custom identifier for the order.            |
+| `transactions`      | Array  | List of transaction statuses associated with the order. |
+| `order_amount`      | Number | Total amount for the order.                     |
+| `transaction_amount`| Number | Amount successfully transacted.                 |
+| `gateway`           | String | Payment gateway used (e.g., Razorpay, Paytm).   |
+| `status`            | String | Transaction status (e.g., SUCCESS, FAILED).     |
+| `payment_mode`      | String | Mode of payment (e.g., UPI, CARD).              |
+| `payment_time`      | ISODate| Timestamp of payment confirmation.              |
+
+---
+
+### **Security Considerations**
+
+#### **JWT Authentication**
+- The endpoint is protected via `JwtAuthGuard`.
+- Requires a valid JWT token in the `Authorization` header (`Bearer <token>`).
+- Unauthorized access attempts are blocked with a `403 Forbidden` or `401 Unauthorized` error.
+
+#### **Secure Data Handling**
+- The `customOrderId` is validated to ensure it matches the expected format.
+- Requests are logged for audit and debugging purposes.
+- Only authorized users or systems can access transaction data.
+
+---
+
+### **Example Usage**
+
+#### **Request**
+```
+GET /transaction-status/ORD-1002
+Authorization: Bearer <JWT token>
+```
+
+#### **Response**
+```json
+[
+    {
+        "_id": "6810d9689c29991d4b81d099",
+        "school_id": "6810d9689c29991d4b81d09a",
+        "customOrderId": "ORD-1002",
+        "gateway_name": "Stripe",
+        "collect_id": "6810d9689c29991d4b81d099",
+        "order_amount": 1000,
+        "transaction_amount": 950.5,
+        "status": "Success",
+        "payment_time": "2025-04-29T10:30:00.000Z"
+    },
+    {
+        "_id": "6810d9689c29991d4b81d099",
+        "school_id": "6810d9689c29991d4b81d09a",
+        "customOrderId": "ORD-1002",
+        "gateway_name": "Stripe",
+        "collect_id": "6810d9689c29991d4b81d099",
+        "order_amount": 22000,
+        "transaction_amount": 220,
+        "status": "Success",
+        "payment_time": "2023-01-18T11:29:18.287Z"
+    }
+]
+```
 
 ---
 
