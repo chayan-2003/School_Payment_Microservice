@@ -47,7 +47,7 @@ The behavior is as follows:
 https://school-payment-microservice.onrender.com
 ```
 
-This API provides authentication features, including user registration, login, and logout, using secure cookie-based JWTs. It ensures that user data is handled securely by hashing passwords and generating JWT tokens for session management.
+
 
 ---
 
@@ -775,7 +775,7 @@ Authorization: Bearer <JWT token>
 ###  **Postman Collection Instructions**
 
 You can access the Postman collection using the following link:  
- [Postman Collection Link](https://blue-star-364034.postman.co/workspace/My-Workspace~d953dd8c-e295-43ee-8350-d0c704ee7809/request/28705488-51c3fd6c-393f-4684-bb06-04e60c74b7bf)
+ [Postman Collection Link](https://blue-star-364034.postman.co/workspace/My-Workspace~d953dd8c-e295-43ee-8350-d0c704ee7809/collection/28705488-16c7dc78-3f5d-4017-8447-6210bc269512?action=share&creator=28705488)
 
 #### **Usage Flow**
 1. **Register**  
