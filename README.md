@@ -355,7 +355,7 @@ This endpoint allows users to create a payment request by passing payment detail
 ---
 
 
-#Transactions  API 
+# Transactions  API 
 
 **Base URL**:  
 ```
@@ -489,7 +489,7 @@ Thanks for the detailed context. Based on your previous message, here's the **cl
 
 ---
 
-#Webhook  API 
+# Webhook  API 
 
 ## Base URL:
 ```
