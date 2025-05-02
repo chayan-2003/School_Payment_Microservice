@@ -5,7 +5,7 @@ export class GetTransactionsDto {
   @IsOptional()
   @Transform(({ value }) => {
     if (Array.isArray(value)) return value.map(v => v.toLowerCase().trim());
-    if (typeof value === 'string') return value.split(',').map(v => v.toLowerCase().trim()); 
+    if (typeof value === 'string') return value.split(',').map(v => v.toLowerCase().trim());
     return [];
   })
   @IsString({ each: true, message: 'Each status must be a string.' })
@@ -26,8 +26,9 @@ export class GetTransactionsDto {
   school_id?: string[];
 
   @IsOptional()
-  @IsIn(['payment_time', 'amount', 'status'], {
-    message: 'SortBy must be one of the following: payment_time, amount, or status.',
+  @IsOptional()
+  @IsIn(['payment_time', 'transaction_amount', 'order_amount'], {
+    message: 'SortBy must be one of the following: payment_time, transaction_amount, or order_amount.',
   })
   sortBy: string = 'payment_time';
 
