@@ -19,6 +19,7 @@ export class TransactionsService {
       page = '1',
       startDate,
       endDate,
+      collectId
     } = dto;
 
     const limitNumber = parseInt(limit, 10) || 10;
@@ -37,6 +38,15 @@ export class TransactionsService {
       { $unwind: '$order_status' },
     ];
 
+    // Filter by collectId
+    if (collectId) {
+      const collectObjectId = new ObjectId(collectId);
+      pipeline.push({
+        $match: {
+          _id: collectObjectId,
+        },
+      });
+    }
     // Filter by status
     if (status && status.length > 0) {
       pipeline.push({

@@ -53,4 +53,8 @@ export class GetTransactionsDto {
   @IsOptional()
   @IsString({ message: 'EndDate must be a valid string.' })
   endDate?: string;
+  @IsOptional()
+  @IsMongoId({ message: 'CollectId must be a valid MongoDB ObjectId.' })
+  collectId?: string; 
+  
 }
