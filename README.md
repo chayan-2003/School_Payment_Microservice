@@ -8,6 +8,9 @@
    - Security Considerations  
 3. **Postman Collection and ENV Variables**  
 4. **Setup and Installation Guide**  
+5.**Login Credentials**
+   email:testuser@gmail.com
+   password:testUser@2003"
 
 #  Overview and Design Assumptions
 
