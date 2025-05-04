@@ -1,6 +1,9 @@
 import { MongoClient, ObjectId } from 'mongodb';
 
-const mongoURI = 'mongodb+srv://chayanghosh185:chaya@cluster0.bdiz4vu.mongodb.net/booking?retryWrites=true&w=majority';
+const mongoURI = process.env.mongo_uri || '';
+if (!mongoURI) {
+  throw new Error('Mongo URI is not defined in the environment variables.');
+}
 
 async function insertData() {
   const client = new MongoClient(mongoURI);
