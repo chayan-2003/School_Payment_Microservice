@@ -417,7 +417,7 @@ This endpoint fetches all transactions with various filtering options like statu
       "payment_time": "2023-10-10T14:48:00Z",
       "custom_order_id": "ORD12345"
     },
-    ...
+    
   ]
 }
 ```
