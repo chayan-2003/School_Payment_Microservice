@@ -450,7 +450,7 @@ This endpoint retrieves all transactions related to a specific school, identifie
       "status": "Completed",
       "payment_time": "2023-10-10T14:48:00Z"
     },
-    ...
+    
   ]
 }
 ```
