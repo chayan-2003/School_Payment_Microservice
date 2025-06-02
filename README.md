@@ -810,16 +810,7 @@ You can access the Postman collection using the following link:
 
 ---
 
-###  Environment Variables (`.env`)
 
-
-
-```
-mongo_uri=mongodb+srv://chayanghosh185:chaya@cluster0.bdiz4vu.mongodb.net/booking?retryWrites=true&w=majority
-JWT_SECRET=0LxQYpsZOSlshGtO9F0as3bd19qYn4TZ
-PG_SECRET_KEY=edvtest01
-PG_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cnVzdGVlSWQiOiI2NWIwZTU1MmRkMzE5NTBhOWI0MWM1YmEiLCJJbmRleE9mQXBpS2V5Ijo2LCJpYXQiOjE3MTE2MjIyNzAsImV4cCI6MTc0MzE3OTg3MH0.Rye77Dp59GGxwCmwWekJHRj6edXWJnff9finjMhxKuw
-JWT_EXPIRY=10h
 
 ```
 
